@@ -1,0 +1,166 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #f9fafb;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e293b;
+  color: white;
+  padding: 1rem 2rem;
+}
+
+.btn-logout {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 1rem;
+  font-weight: 500;
+}
+.btn-logout:hover { background-color: #dc2626; }
+
+.main-content {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 240px;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 2rem 1rem;
+}
+
+.sidebar nav a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #4b5563;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  background-color: #f3f4f6;
+  color: #2563eb;
+}
+
+.content-body {
+  flex: 1;
+  padding: 2.5rem;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* 🚀 NUEVO: Alineación perfecta de la botonera de reportes */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary:hover { background-color: #1d4ed8; }
+
+/* 🚀 NUEVO: Estilos para el botón de Excel */
+.btn-success {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-success:hover { background-color: #059669; }
+
+/* 🚀 NUEVO: Estilos para el botón de PDF */
+.btn-danger {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-danger:hover { background-color: #dc2626; }
+
+.admin-table {
+  width: 100%;
+  background: white;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.admin-table th {
+  background-color: #f8fafc;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Badge estilizado para el código único del perfil (ej: ADM, OP) */
+.badge-code {
+  background-color: #f0fdf4;
+  color: #166534;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-weight: 600;
+}
+
+.btn-action {
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-right: 0.5rem;
+  font-weight: 500;
+}
+
+.btn-action.edit { background-color: #f59e0b; color: white; }
+.btn-action.edit:hover { background-color: #d97706; }
+
+.btn-action.delete { background-color: #dc2626; color: white; }
+.btn-action.delete:hover { background-color: #b91c1c; }
+
+/* Estados de carga y vacíos */
+.loading,
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #64748b;
+  font-weight: 500;
+}

@@ -1,0 +1,71 @@
+<div class="dashboard-container">
+  <header class="navbar">
+    <div class="logo">Admin Panel</div>
+    <div class="user-menu">
+      <span>Bienvenido, <strong>{{ usuarioLogueado }}</strong></span>
+      <button routerLink="/login" class="btn-logout">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <aside class="sidebar">
+      <nav>
+        <a routerLink="/productos">📦 Productos</a>
+        <a routerLink="/perfiles">🔑 Perfiles / Roles</a>
+        <a routerLink="/usuarios">👥 Usuarios</a>
+        <a routerLink="/auditoria" class="active">🛡️ Bitácora Auditoría</a>
+      </nav>
+    </aside>
+
+    <main class="content-body">
+      <div class="table-header">
+        <h2>🛡️ Bitácora de Auditoría del Sistema</h2>
+        <div class="action-buttons">
+          <button (click)="cargarHistorial()" class="btn-primary">🔄 Actualizar Historial</button>
+        </div>
+      </div>
+
+      <div *ngIf="cargando" class="loading">Consultando registros de segurida...</div>
+
+      <table *ngIf="!cargando && historial.length > 0" class="admin-table">
+        <thead>
+        <tr>
+          <th>Fecha y Hora</th>
+          <th>Usuario</th>
+          <th>Módulo afectado</th>
+          <th>Acción realizada</th>
+          <th>Descripción del Evento</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let audit of historial; trackBy: trackByAuditoriaId">
+          <td class="text-muted">{{ audit.fecha_movimiento | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+
+          <td><strong>{{ audit['usuario'] || 'sistema' }}</strong></td>
+
+          <td>
+            <span class="badge-module">
+              {{ obtenerModuloLegible(audit['accion']) }}
+            </span>
+          </td>
+
+          <td><span [ngClass]="getBadgeClass(audit.accion)">{{ audit.accion | uppercase }}</span></td>
+
+          <td>
+            <span>
+              {{ obtenerDescripcion(audit['accion']) }}:
+              <small style="display: block; color: #64748b; font-family: monospace; margin-top: 2px;">
+                ID: {{ audit['valores_anteriores']?._id || audit['valores_nuevos']?._id || 'N/A' }}
+              </small>
+            </span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="!cargando && historial.length === 0" class="empty-state">
+        No se han registrado eventos o movimientos en la bitácora aún.
+      </div>
+    </main>
+  </div>
+</div>

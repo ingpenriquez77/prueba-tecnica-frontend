@@ -1,0 +1,62 @@
+<div class="dashboard-container">
+  <header class="navbar">
+    <div class="logo">Admin Panel</div>
+    <div class="user-menu">
+      <span>Bienvenido, <strong>{{ usuarioLogueado }}</strong></span>
+      <button (click)="logout()" class="btn-logout">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <aside class="sidebar">
+      <nav>
+        <a routerLink="/productos" class="active">📦 Productos</a>
+        <a routerLink="/perfiles">🔑 Perfiles / Roles</a>
+        <a routerLink="/usuarios">👥 Usuarios</a>
+        <a routerLink="/auditoria">🛡️ Bitácora Auditoría</a>
+      </nav>
+    </aside>
+
+    <main class="content-body">
+      <div class="table-header">
+        <h2>Catálogo de Productos</h2>
+        <div class="action-buttons">
+          <button (click)="exportarExcel()" class="btn-success">📊 Exportar Excel</button>
+          <button (click)="exportarPDF()" class="btn-danger">📕 Exportar PDF</button>
+          <button routerLink="/productos/nuevo" class="btn-primary">+ Agregar Producto</button>
+        </div>
+      </div>
+
+      <div *ngIf="cargando" class="loading">Cargando productos...</div>
+
+      <table *ngIf="!cargando && productos.length > 0" class="admin-table">
+        <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre del Producto</th>
+          <th>Marca</th>
+          <th>Precio</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let prod of productos; trackBy: trackByProductoId">
+          <td><span class="badge-code">{{ prod.codigo_producto }}</span></td>
+          <td><strong>{{ prod.nombre_producto }}</strong></td>
+          <td>{{ prod.marca || 'N/A' }}</td>
+          <td>${{ prod.precio | number:'1.2-2' }}</td>
+          <td>
+            <button [routerLink]="['/productos/editar', prod.id]" class="btn-action edit">Editar</button>
+            <button (click)="eliminarProducto(prod.id)" class="btn-action delete">Eliminar</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="!cargando && productos.length === 0" class="empty-state">
+        No hay productos registrados en este momento.
+      </div>
+    </main>
+
+  </div>
+</div>

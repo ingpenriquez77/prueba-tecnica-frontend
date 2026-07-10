@@ -1,0 +1,105 @@
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 2rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.form-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 600px;
+}
+
+h2 { margin: 0 0 0.5rem 0; color: #1e293b; }
+.subtitle { color: #64748b; font-size: 0.9rem; margin-bottom: 2rem; }
+.form-grid { display: flex; gap: 1rem; }
+.form-grid .form-group { flex: 1; }
+.form-group { margin-bottom: 1.25rem; }
+label { display: block; margin-bottom: 0.5rem; color: #475569; font-weight: 600; font-size: 0.9rem; }
+
+input[type="text"], input[type="email"], input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+input:focus { outline: none; border-color: #2563eb; }
+input:disabled { background-color: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
+
+.roles-box {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 1rem;
+  max-height: 150px;
+  overflow-y: auto;
+}
+.role-item { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.checkbox-label { display: inline; color: #334155; font-weight: 500; margin-bottom: 0; cursor: pointer; }
+
+.form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; }
+.btn-cancel { background-color: #e2e8f0; color: #475569; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; text-decoration: none; font-weight: 500; display: inline-block; }
+.btn-submit { background-color: #2563eb; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
+.btn-submit:disabled { background-color: #93c5fd; cursor: not-allowed; }
+.alert-error { background-color: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 0.75rem; border-radius: 6px; margin-bottom: 1.5rem; }
+
+/* Contenedor horizontal para la foto */
+.avatar-upload-zone {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+/* El cuadro chico para la foto (Crear y Editar) */
+.avatar-preview-box {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  border: 2px solid #cbd5e1;
+  background-color: #ffffff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.avatar-preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  font-size: 2rem;
+  color: #94a3b8;
+}
+
+.avatar-input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.avatar-input-box input[type="file"] {
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.file-help {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}

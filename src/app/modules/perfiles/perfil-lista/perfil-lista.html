@@ -1,0 +1,63 @@
+<div class="dashboard-container">
+  <header class="navbar">
+    <div class="logo">Admin Panel</div>
+    <div class="user-menu">
+      <span>Bienvenido, <strong>{{ usuarioLogueado }}</strong></span>
+      <button (click)="logout()" class="btn-logout">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <aside class="sidebar">
+      <nav>
+        <a routerLink="/productos">📦 Productos</a>
+        <a routerLink="/perfiles" class="active">🔑 Perfiles / Roles</a>
+        <a routerLink="/usuarios">👥 Usuarios</a>
+        <a routerLink="/auditoria">🛡️ Bitácora Auditoría</a>
+      </nav>
+    </aside>
+
+    <main class="content-body">
+      <div class="table-header">
+        <h2>Gestión de Perfiles y Roles</h2>
+        <div class="action-buttons">
+          <button (click)="exportarExcel()" class="btn-success">📊 Exportar Excel</button>
+          <button (click)="exportarPDF()" class="btn-danger">📕 Exportar PDF</button>
+          <button routerLink="/perfiles/nuevo" class="btn-primary">+ Nuevo Perfil</button>
+        </div>
+      </div>
+
+      <div *ngIf="cargando" class="loading">Cargando roles...</div>
+
+      <table *ngIf="!cargando && perfiles.length > 0" class="admin-table">
+        <thead>
+        <tr>
+          <th>Código de Perfil</th>
+          <th>Nombre del Rol</th>
+          <th>Módulos Permitidos</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let perfil of perfiles; trackBy: trackByPerfilId">
+          <td><span class="badge-code">{{ perfil.codigo_perfil }}</span></td>
+          <td><strong>{{ perfil.nombre_perfil }}</strong></td>
+          <td>
+            {{ perfil.secciones_permitidas && perfil.secciones_permitidas.length > 0
+            ? perfil.secciones_permitidas.join(', ')
+            : 'Ninguno' }}
+          </td>
+          <td>
+            <button [routerLink]="['/perfiles/editar', perfil.id]" class="btn-action edit">Editar</button>
+            <button (click)="eliminarPerfil(perfil.id)" class="btn-action delete">Eliminar</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="!cargando && perfiles.length === 0" class="empty-state">
+        No hay perfiles registrados en este momento.
+      </div>
+    </main>
+  </div>
+</div>

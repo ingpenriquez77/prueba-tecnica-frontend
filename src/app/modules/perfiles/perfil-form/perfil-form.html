@@ -1,0 +1,56 @@
+<div class="form-container">
+  <div class="form-card">
+    <h2>{{ esEdicion ? '📝 Editar Perfil' : '🔑 Nuevo Perfil' }}</h2>
+    <p class="subtitle">Define los accesos estructurales de este rol</p>
+
+    <div *ngIf="errorMensaje" class="alert-error">{{ errorMensaje }}</div>
+
+    <form (ngSubmit)="guardar()" #f="ngForm">
+
+      <div class="form-group">
+        <label for="codigo">Código del Perfil (Slug)</label>
+        <input
+          type="text"
+          id="codigo"
+          name="codigo_perfil"
+          [(ngModel)]="perfil.codigo_perfil"
+          placeholder="Ej. ADM"
+          [disabled]="esEdicion"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="nombre">Nombre del Perfil</label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre_perfil"
+          [(ngModel)]="perfil.nombre_perfil"
+          placeholder="Ej. Administrador"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label>Secciones Permitidas</label>
+        <div class="permissions-grid">
+          <div *ngFor="let mod of modulosDisponibles" class="permission-item">
+            <input
+              type="checkbox"
+              [id]="mod.id"
+              [checked]="marcarCheckbox(mod.id)"
+              (change)="onCheckboxChange(mod.id, $event)">
+            <label [for]="mod.id" class="checkbox-label">{{ mod.nombre }}</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" routerLink="/perfiles" class="btn-cancel">Cancelar</button>
+        <button type="submit" [disabled]="!f.valid || cargando" class="btn-submit">
+          {{ cargando ? 'Guardando...' : (esEdicion ? 'Actualizar Cambios' : 'Crear Perfil') }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

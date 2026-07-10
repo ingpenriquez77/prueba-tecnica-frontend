@@ -1,0 +1,72 @@
+<div class="dashboard-container">
+  <header class="navbar">
+    <div class="logo">Admin Panel</div>
+    <div class="user-menu">
+      <span>Bienvenido, <strong>{{ usuarioLogueado }}</strong></span>
+      <button (click)="logout()" class="btn-logout">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <aside class="sidebar">
+      <nav>
+        <a routerLink="/productos">📦 Productos</a>
+        <a routerLink="/perfiles">🔑 Perfiles / Roles</a>
+        <a routerLink="/usuarios" class="active">👥 Usuarios</a>
+        <a routerLink="/auditoria">🛡️ Bitácora Auditoría</a>
+      </nav>
+    </aside>
+
+    <main class="content-body">
+      <div class="table-header">
+        <h2>Gestión de Usuarios</h2>
+        <div class="action-buttons">
+          <button (click)="exportarExcel()" class="btn-success">📊 Exportar Excel</button>
+          <button (click)="exportarPDF()" class="btn-danger">📕 Exportar PDF</button>
+          <button routerLink="/usuarios/nuevo" class="btn-primary">+ Nuevo Usuario</button>
+        </div>
+      </div>
+
+      <div *ngIf="cargando" class="loading">Cargando usuarios...</div>
+
+      <table *ngIf="!cargando && usuarios.length > 0" class="admin-table">
+        <thead>
+        <tr>
+          <th>Foto</th>
+          <th>Código</th>
+          <th>Usuario (Login)</th>
+          <th>Nombre Completo</th>
+          <th>Correo Electrónico</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let u of usuarios; trackBy: trackByUsuarioId">
+          <td>
+            <div class="table-avatar-container">
+              <img *ngIf="u.foto_perfil" [src]="u.foto_perfil" alt="Avatar" class="table-avatar">
+              <div *ngIf="!u.foto_perfil" class="table-avatar-placeholder">
+                {{ u.nombre_completo.charAt(0).toUpperCase() }}
+              </div>
+            </div>
+          </td>
+          <td><span class="badge-nickname">{{ u.codigo_usuario }}</span></td>
+          <td><strong>{{ u.usuario }}</strong></td>
+          <td>{{ u.nombre_completo }}</td>
+          <td>{{ u.correo_electronico }}</td>
+          <td>{{ u.telefono }}</td>
+          <td>
+            <button [routerLink]="['/usuarios/editar', u.id]" class="btn-action edit">Editar</button>
+            <button (click)="eliminarUsuario(u.id!)" class="btn-action delete">Eliminar</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="!cargando && usuarios.length === 0" class="empty-state">
+        No hay usuarios registrados en este momento.
+      </div>
+    </main>
+  </div>
+</div>

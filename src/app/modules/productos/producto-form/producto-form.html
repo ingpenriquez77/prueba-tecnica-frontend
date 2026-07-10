@@ -1,0 +1,54 @@
+<div class="form-container">
+  <div class="form-card">
+    <h2>{{ esEdicion ? 'Editar Producto' : 'Nuevo Producto' }}</h2>
+    <p class="subtitle">Llena los metadatos obligatorios para impactar la base MongoDB</p>
+
+    <div *ngIf="errorMensaje" class="alert-error">
+      {{ errorMensaje }}
+    </div>
+
+    <form (ngSubmit)="guardar()" #productForm="ngForm">
+
+      <div class="form-group">
+        <label for="nombre">Nombre del Producto</label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre_producto"
+          [(ngModel)]="producto.nombre_producto"
+          placeholder="Ej. Laptop Gaming"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="marca">Marca</label>
+        <input
+          type="text"
+          id="marca"
+          name="marca"
+          [(ngModel)]="producto.marca"
+          placeholder="Ej. ASUS"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="precio">Precio ($)</label>
+        <input
+          type="number"
+          id="precio"
+          name="precio"
+          [(ngModel)]="producto.precio"
+          placeholder="0.00"
+          required>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" routerLink="/productos" class="btn-cancel">Cancelar</button>
+        <button type="submit" [disabled]="!productForm.valid || cargando" class="btn-submit">
+          {{ cargando ? 'Procesando...' : (esEdicion ? 'Actualizar Cambios' : 'Guardar Producto') }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
