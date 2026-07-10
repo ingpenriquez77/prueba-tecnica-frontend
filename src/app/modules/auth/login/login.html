@@ -1,7 +1,7 @@
 <div class="login-container">
   <div class="login-card">
     <h2>Iniciar Sesión</h2>
-    <p class="subtitle">Panel de Control - Acceso Administrativo </p>
+    <p class="subtitle">Panel de Control - Acceso Administrativo</p>
 
     <div *ngIf="errorMensaje" class="alert-error">
       {{ errorMensaje }}
@@ -29,6 +29,10 @@
           [(ngModel)]="credenciales.password"
           placeholder="••••••••"
           required>
+        
+        <div class="forgot-password-container">
+          <a routerLink="/recuperar" class="link-forgot">¿Olvidaste tu contraseña?</a>
+        </div>
       </div>
 
       <button type="submit" [disabled]="cargando" class="btn-login">

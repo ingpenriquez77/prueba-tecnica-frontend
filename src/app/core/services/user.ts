@@ -23,9 +23,9 @@ export class UserService {
     return this.http.post<any>(this.baseUrl, formData);
   }
 
-  actualizar(id: string, formData: FormData): Observable<any> {
-    return this.http.post<any>(`${`${this.baseUrl}/${id}`}?_method=PUT`, formData);
-  }
+  actualizar(id: string, data: FormData): Observable<any> {
+  return this.http.post(`${this.baseUrl}/${id}`, data); 
+}
 
   eliminar(id: string): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/${id}`);

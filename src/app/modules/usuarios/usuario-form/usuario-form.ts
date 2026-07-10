@@ -125,17 +125,17 @@ export class UsuarioFormComponent implements OnInit {
     formData.append('correo_electronico', this.usuario.correo_electronico);
     formData.append('telefono', this.usuario.telefono);
 
-    if (this.usuario.password) {
+    // 🔑 CONTRASEÑA INTELIGENTE: Solo viaja si el usuario escribió algo (Nuevo u Opcional en Edición)
+    if (this.usuario.password && this.usuario.password.trim() !== '') {
       formData.append('password', this.usuario.password);
     }
 
-    // 🚀 CORREGIDO: Enviamos los IDs uno por uno emulando un array nativo para el validador de Laravel
+    // 🚀 IDs de Perfiles emulando un array nativo
     if (this.usuario.perfil_ids && this.usuario.perfil_ids.length > 0) {
       this.usuario.perfil_ids.forEach(id => {
         formData.append('perfil_ids[]', id);
       });
     } else {
-      // Si el arreglo está vacío, enviamos un campo vacío para evitar que falte el parámetro
       formData.append('perfil_ids[]', '');
     }
 
@@ -145,6 +145,8 @@ export class UsuarioFormComponent implements OnInit {
     }
 
     if (this.esEdicion) {
+      formData.append('_method', 'PUT');
+
       this.userService.actualizar(this.usuarioId!, formData).subscribe({
         next: () => this.router.navigate(['/usuarios']).then(() => alert('Usuario actualizado con éxito.')),
         error: (err) => {

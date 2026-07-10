@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './modules/auth/login/login';
+import { RecuperarComponent } from './modules/recuperar/recuperar';
 import { ProductoListaComponent } from './modules/productos/producto-lista/producto-lista';
 import { ProductoFormComponent } from './modules/productos/producto-form/producto-form';
 import { PerfilListaComponent } from './modules/perfiles/perfil-lista/perfil-lista';
@@ -15,6 +16,7 @@ import { roleGuard } from './core/guards/role-guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'recuperar', component: RecuperarComponent },
 
   // Módulo de Productos
   { path: 'productos', component: ProductoListaComponent, canActivate: [AuthGuard, roleGuard], data: { modulo: 'productos' } },

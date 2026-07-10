@@ -27,9 +27,20 @@
       </div>
 
       <div class="form-grid">
-        <div class="form-group" *ngIf="!esEdicion">
-          <label for="password">Contraseña</label>
-          <input type="password" id="password" name="password" [(ngModel)]="usuario.password" placeholder="******" required>
+        <div class="form-group">
+          <label for="password">
+            Contraseña 
+            <small *ngIf="esEdicion" style="color: #64748b; font-weight: normal; display: inline;">
+              (Dejar vacío para mantener la actual)
+            </small>
+          </label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            [(ngModel)]="usuario.password" 
+            placeholder="******" 
+            [required]="!esEdicion"> 
         </div>
 
         <div class="form-group">
