@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing-module';
 import { AppComponent } from './app';
@@ -19,6 +20,7 @@ import { PerfilFormComponent } from './modules/perfiles/perfil-form/perfil-form'
 // Componentes de Usuarios
 import { UsuarioListaComponent } from './modules/usuarios/usuario-lista/usuario-lista';
 import { UsuarioFormComponent } from './modules/usuarios/usuario-form/usuario-form';
+import { MiPerfilFormComponent } from './modules/mi-perfil-form/mi-perfil-form';
 
 import { AuthInterceptor } from './core/interceptors/auth-interceptor';
 
@@ -29,19 +31,16 @@ import { AuthInterceptor } from './core/interceptors/auth-interceptor';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-
+    FormsModule,
     AppComponent,
     LoginComponent,
     ProductoListaComponent,
     PerfilListaComponent,
-
-    // Formularios
     ProductoFormComponent,
     PerfilFormComponent,
-
-    // Usuarios
     UsuarioListaComponent,
-    UsuarioFormComponent
+    UsuarioFormComponent,
+    MiPerfilFormComponent
   ],
   providers: [
     {
@@ -50,6 +49,6 @@ import { AuthInterceptor } from './core/interceptors/auth-interceptor';
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent] // Mantener el arranque nativo de la SPA
 })
 export class AppModule { }

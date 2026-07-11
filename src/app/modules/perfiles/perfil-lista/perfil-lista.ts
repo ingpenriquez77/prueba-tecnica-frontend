@@ -17,6 +17,7 @@ export class PerfilListaComponent implements OnInit {
   perfiles: Perfil[] = [];
   cargando: boolean = true;
   usuarioLogueado: string | null = '';
+  mostrarMenu: boolean = false;
 
   constructor(
     private profileService: ProfileService,
@@ -55,11 +56,35 @@ export class PerfilListaComponent implements OnInit {
   }
 
   /**
-   * 🚀 OPTIMIZACIÓN MAESTRA: Rastrera cada fila por su ID único de MongoDB
+   * OPTIMIZACIÓN MAESTRA: Rastrera cada fila por su ID único de MongoDB
    * Evita lag visual al recargar el listado NoSQL
    */
   trackByPerfilId(index: number, perfil: Perfil): string {
     return perfil.id || '';
+  }
+
+  // ⚡ Abre y cierra el menú desplegable
+  toggleMenu(event: Event): void {
+    event.stopPropagation();
+    this.mostrarMenu = !this.mostrarMenu;
+    this.cdr.markForCheck();
+  }
+
+  irAEditarPerfil(): void {
+    // 1. Obtenemos el valor crudo del almacenamiento
+    let usuarioId = localStorage.getItem('usuario_id');
+    
+    if (!usuarioId || usuarioId === 'null' || usuarioId === 'undefined') {
+      console.warn("⚠️ 'usuario_id' está corrupto o es null en el localStorage. Aplicando fallback de emergencia.");
+      usuarioId = 'mi-perfil'; 
+    }
+
+    console.log("🚀 ID definitivo enviado al Router:", usuarioId);
+    
+    this.mostrarMenu = false;
+    
+    this.router.navigate(['/mi-perfil/editar/', usuarioId]);
+    this.cdr.markForCheck();
   }
 
   eliminarPerfil(id: string): void {

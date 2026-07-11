@@ -1,9 +1,18 @@
 <div class="dashboard-container">
   <header class="navbar">
     <div class="logo">Admin Panel</div>
-    <div class="user-menu">
-      <span>Bienvenido, <strong>{{ usuarioLogueado }}</strong></span>
-      <button routerLink="/login" class="btn-logout">Cerrar Sesión</button>
+    <div class="user-menu-container">
+      <div class="user-menu-trigger" (click)="toggleMenu($event)">
+        <span>Bienvenido, <strong class="admin-click">{{ usuarioLogueado }}</strong> ▾</span>
+      </div>
+      
+      <!-- Menú desplegable dinámico -->
+      <div class="dropdown-menu" *ngIf="mostrarMenu">
+        <!-- Redirecciona dinámicamente usando el ID del usuario activo -->
+        <a (click)="irAEditarPerfil()" class="dropdown-item">⚙️ Editar mi Perfil</a>
+        <hr class="dropdown-divider">
+        <a (click)="logout()" class="dropdown-item logout-item">🚪 Cerrar Sesión</a>
+      </div>
     </div>
   </header>
 

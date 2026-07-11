@@ -2,58 +2,55 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ProfileService } from '../../../core/services/profile';
-import { Perfil } from '../../../shared/interfaces/perfil.interface';
+import { ProfileService } from '../../../core/services/profile'; // Ajusta la ruta de tus servicios
 
 @Component({
-  selector: 'app-perfil-form',
+  selector: 'app-perfil-form', 
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './perfil-form.html',
-  styleUrls: ['./perfil-form.css'],
+  templateUrl: './perfil-form.html', 
+  styleUrls: ['./perfil-form.css'],   
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PerfilFormComponent implements OnInit {
-  perfil: Perfil = {
+  perfil: any = {
     codigo_perfil: '',
     nombre_perfil: '',
-    secciones_permitidas: []
+    secciones_permitidas: [] 
   };
 
-  esEdicion: boolean = false;
-  perfilId: string | null = null;
-  cargando: boolean = false;
-  errorMensaje: string | null = null;
-
-  // 🛡️ Listado de módulos de tu sistema NoSQL
+  // Listado estático de módulos que coinciden exactamente con tus slugs del Sidebar e interfaz
   modulosDisponibles = [
-    { id: 'productos', nombre: '📦 Catálogo de Productos' },
+    { id: 'productos', nombre: '📦 Productos e Inventario' },
     { id: 'perfiles', nombre: '🔑 Perfiles y Roles' },
     { id: 'usuarios', nombre: '👥 Gestión de Usuarios' },
     { id: 'auditoria', nombre: '🛡️ Bitácora de Auditoría' }
   ];
 
+  esEdicion = false;
+  cargando = false;
+  errorMensaje: string | null = null;
+
   constructor(
     private profileService: ProfileService,
-    private router: Router,
     private route: ActivatedRoute,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    // 🔍 Detectamos si hay un ID en la ruta (/perfiles/editar/:id)
-    this.perfilId = this.route.snapshot.paramMap.get('id');
-    if (this.perfilId) {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
       this.esEdicion = true;
-      this.cargarPerfil(this.perfilId);
+      this.cargarPerfil(id);
     }
   }
 
   cargarPerfil(id: string): void {
     this.profileService.obtenerPorId(id).subscribe({
-      next: (response) => {
-        if (response && response.data) {
-          this.perfil = response.data;
+      next: (res: any) => {
+        if (res && res.data) {
+          this.perfil = res.data;
           if (!this.perfil.secciones_permitidas) {
             this.perfil.secciones_permitidas = [];
           }
@@ -61,13 +58,16 @@ export class PerfilFormComponent implements OnInit {
         }
       },
       error: () => {
-        this.errorMensaje = 'No se pudo obtener el perfil de MongoDB.';
+        this.errorMensaje = 'Error al recuperar los datos del rol desde MongoDB.';
         this.cdr.markForCheck();
       }
     });
   }
 
-  // 🔄 Agrega o quita elementos del arreglo NoSQL según los clicks de los checkboxes
+  marcarCheckbox(moduloId: string): boolean {
+    return this.perfil.secciones_permitidas ? this.perfil.secciones_permitidas.includes(moduloId) : false;
+  }
+
   onCheckboxChange(moduloId: string, event: Event): void {
     const checkbox = event.target as HTMLInputElement;
     if (checkbox.checked) {
@@ -75,42 +75,54 @@ export class PerfilFormComponent implements OnInit {
         this.perfil.secciones_permitidas.push(moduloId);
       }
     } else {
-      this.perfil.secciones_permitidas = this.perfil.secciones_permitidas.filter(m => m !== moduloId);
+      this.perfil.secciones_permitidas = this.perfil.secciones_permitidas.filter((id: string) => id !== moduloId);
     }
+    // 🚀 Informa a la estrategia OnPush para refrescar la validez del botón al instante
+    this.cdr.markForCheck(); 
   }
 
-  marcarCheckbox(moduloId: string): boolean {
-    return this.perfil.secciones_permitidas ? this.perfil.secciones_permitidas.includes(moduloId) : false;
+  /**
+   * 🛠️ VALIDACIÓN MÍNIMA DE SECCIONES
+   * Retorna true únicamente si el arreglo NoSQL posee al menos una opción asignada
+   */
+  validarSecciones(): boolean {
+    return this.perfil.secciones_permitidas && this.perfil.secciones_permitidas.length >= 1;
   }
 
   guardar(): void {
+    if (!this.validarSecciones()) {
+      this.errorMensaje = 'Operación denegada. Debes seleccionar obligatoriamente al menos una sección.';
+      this.cdr.markForCheck();
+      return;
+    }
+
     this.cargando = true;
+    this.errorMensaje = null;
     this.cdr.markForCheck();
 
-    if (this.esEdicion) {
-      // Modo Edición: Actualiza usando PUT
-      this.profileService.actualizar(this.perfilId!, this.perfil).subscribe({
-        next: () => {
-          this.router.navigate(['/perfiles']).then(() => alert('Perfil actualizado correctamente en MongoDB.'));
-        },
-        error: () => {
-          this.cargando = false;
-          this.errorMensaje = 'Error al actualizar el perfil.';
+    const peticion = this.esEdicion
+      ? this.profileService.actualizar(this.perfil.id, this.perfil)
+      : this.profileService.crear(this.perfil);
+
+    peticion.subscribe({
+      next: (res: any) => {
+        this.cargando = false;
+        if (res.success) {
+          this.router.navigate(['/perfiles']).then(() => alert('Perfil procesado correctamente.'));
+        } else {
+          this.errorMensaje = res.message || 'Ocurrió un inconveniente al guardar.';
           this.cdr.markForCheck();
         }
-      });
-    } else {
-      // Modo Creación: Registra usando POST
-      this.profileService.crear(this.perfil).subscribe({
-        next: () => {
-          this.router.navigate(['/perfiles']).then(() => alert('Nuevo perfil guardado con éxito.'));
-        },
-        error: () => {
-          this.cargando = false;
-          this.errorMensaje = 'Error al crear el perfil.';
-          this.cdr.markForCheck();
+      },
+      error: (err) => {
+        this.cargando = false;
+        if (err.error && err.error.errors) {
+          this.errorMensaje = Object.values(err.error.errors).flat().join(' | ');
+        } else {
+          this.errorMensaje = err.error?.message || 'Error de conexión con el servidor.';
         }
-      });
-    }
+        this.cdr.markForCheck();
+      }
+    });
   }
 }

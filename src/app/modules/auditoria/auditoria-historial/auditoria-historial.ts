@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuditoriaService } from '../../../core/services/auditoria';
+import { AuthService } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-auditoria-historial',
@@ -15,18 +16,29 @@ export class AuditoriaHistorialComponent implements OnInit {
   historial: any[] = [];
   cargando: boolean = true;
   usuarioLogueado: string | null = '';
+  mostrarMenu: boolean = false;
 
   private auditoriaService = inject(AuditoriaService);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
+  private authService = inject(AuthService); 
 
   ngOnInit(): void {
     this.usuarioLogueado = localStorage.getItem('usuario_nickname') || 'Administrador';
     this.cargarHistorial();
   }
 
+  // 🎯 CORREGIDO: Renombrado exactamente a tieneAcceso para corregir el error del compilador
   tieneAcceso(seccion: string): boolean {
-    const secciones = JSON.parse(localStorage.getItem('secciones_permitidas') || '[]');
-    return secciones.includes(seccion);
+    const rawSecciones = localStorage.getItem('secciones_permitidas');
+    if (!rawSecciones) return false;
+
+    try {
+      const secciones = JSON.parse(rawSecciones);
+      return Array.isArray(secciones) && secciones.includes(seccion);
+    } catch (e) {
+      return false; 
+    }
   }
 
   cargarHistorial(): void {
@@ -62,6 +74,41 @@ export class AuditoriaHistorialComponent implements OnInit {
     });
   }
 
+  // ⚡ Abre y cierra el menú desplegable superior del Navbar
+  toggleMenu(event: Event): void {
+    event.stopPropagation();
+    this.mostrarMenu = !this.mostrarMenu;
+    this.cdr.markForCheck();
+  }
+
+  // ⚡ Cierra el menú automáticamente si el usuario hace clic fuera de él
+  @HostListener('document:click')
+  clickAfuera(): void {
+    if (this.mostrarMenu) {
+      this.mostrarMenu = false;
+      this.cdr.markForCheck();
+    }
+  }
+
+  // ⚡ Redirige al formulario protegido pasando el ID activo extraído del login
+  irAEditarPerfil(): void {
+    let usuarioId = localStorage.getItem('usuario_id');
+    
+    // 🎯 LIMPIEZA TOTAL: Valida y limpia strings corruptas del almacenamiento local
+    if (!usuarioId || usuarioId === 'null' || usuarioId === 'undefined') {
+      console.warn("⚠️ 'usuario_id' está corrupto o es null en el localStorage. Aplicando fallback de emergencia.");
+      usuarioId = 'mi-perfil'; 
+    }
+
+    console.log("🚀 ID definitivo enviado al Router desde Auditoría:", usuarioId);
+    
+    this.mostrarMenu = false;
+    
+    // 🎯 RUTA SIN DIAGONAL FINAL
+    this.router.navigate(['/mi-perfil/editar', usuarioId]);
+    this.cdr.markForCheck();
+  }
+
   getBadgeClass(accion: string): string {
     const act = accion?.toLowerCase() || '';
     if (act.includes('crear') || act.includes('store')) return 'badge-create';
@@ -72,6 +119,11 @@ export class AuditoriaHistorialComponent implements OnInit {
 
   trackByAuditoriaId(index: number, item: any): string {
     return item.id || item._id || index.toString();
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   obtenerModuloLegible(accion: string): string {
@@ -89,16 +141,16 @@ export class AuditoriaHistorialComponent implements OnInit {
   }
 
   obtenerDescripcion(accion: string): string {
-      const accionNormalizada = accion?.toUpperCase() || '';
+    const accionNormalizada = accion?.toUpperCase() || '';
 
-      if (accionNormalizada === 'ACTUALIZAR PRODUCTO') return 'Se actalizo el Producto';
-      if (accionNormalizada === 'ACTUALIZAR PERFIL') return 'Se actualizo el Perfil';
-      if (accionNormalizada === 'ACTUALIZAR USUARIO') return 'Se actualizo el Usuario';
+    if (accionNormalizada === 'ACTUALIZAR PRODUCTO') return 'Se actualizó el Producto';
+    if (accionNormalizada === 'ACTUALIZAR PERFIL') return 'Se actualizó el Perfil';
+    if (accionNormalizada === 'ACTUALIZAR USUARIO') return 'Se actualizó el Usuario';
 
-      if (accionNormalizada === 'ELIMINAR PRODUCTO') return 'Se elimino el Producto';
-      if (accionNormalizada === 'ELIMINAR PERFIL') return 'Se elimino el Perfil';
-      if (accionNormalizada === 'ELIMINAR USUARIO') return 'Se elimino el Usuario';
+    if (accionNormalizada === 'ELIMINAR PRODUCTO') return 'Se eliminó el Producto';
+    if (accionNormalizada === 'ELIMINAR PERFIL') return 'Se eliminó el Perfil';
+    if (accionNormalizada === 'ELIMINAR USUARIO') return 'Se eliminó el Usuario';
 
-      return 'Sistema';
-    }
+    return 'Sistema';
+  }
 }

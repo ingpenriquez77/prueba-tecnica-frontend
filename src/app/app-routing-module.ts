@@ -10,6 +10,7 @@ import { PerfilFormComponent } from './modules/perfiles/perfil-form/perfil-form'
 import { UsuarioListaComponent } from './modules/usuarios/usuario-lista/usuario-lista';
 import { UsuarioFormComponent } from './modules/usuarios/usuario-form/usuario-form';
 import { AuditoriaHistorialComponent } from './modules/auditoria/auditoria-historial/auditoria-historial';
+import { MiPerfilFormComponent } from './modules/mi-perfil-form/mi-perfil-form'; 
 
 import { AuthGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
@@ -33,9 +34,13 @@ const routes: Routes = [
   { path: 'usuarios/nuevo', component: UsuarioFormComponent, canActivate: [AuthGuard, roleGuard], data: { modulo: 'usuarios' } },
   { path: 'usuarios/editar/:id', component: UsuarioFormComponent, canActivate: [AuthGuard, roleGuard], data: { modulo: 'usuarios' } },
 
+  // Módulo de Auto-Edición Protegido de Perfil (Solo requiere estar logueado)
+  { path: 'mi-perfil/editar/:id', component: MiPerfilFormComponent, canActivate: [AuthGuard] },
+
   // Módulo de Auditoría
   { path: 'auditoria', component: AuditoriaHistorialComponent, canActivate: [AuthGuard, roleGuard], data: { modulo: 'auditoria' } },
 
+  // Redirecciones y Comodines
   { path: '', redirectTo: '/productos', pathMatch: 'full' },
   { path: '**', redirectTo: '/productos' }
 ];

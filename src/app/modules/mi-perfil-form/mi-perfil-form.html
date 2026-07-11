@@ -1,7 +1,7 @@
 <div class="form-container">
   <div class="form-card">
-    <h2>{{ esEdicion ? '📝 Editar Usuario' : '👥 Nuevo Usuario Sistema' }}</h2>
-    <p class="subtitle">Sincronizado con el esquema</p>
+    <h2>📝 Editar Mis Datos de Perfil</h2>
+    <p class="subtitle">Actualiza tus credenciales personales de acceso</p>
 
     <div *ngIf="errorMensaje" class="alert-error">
       {{ errorMensaje }}
@@ -30,7 +30,7 @@
         <div class="form-group">
           <label for="password">
             Contraseña 
-            <small *ngIf="esEdicion" style="color: #64748b; font-weight: normal; display: inline;">
+            <small style="color: #64748b; font-weight: normal; display: inline;">
               (Dejar vacío para mantener la actual)
             </small>
           </label>
@@ -39,13 +39,11 @@
             id="password" 
             name="password" 
             [(ngModel)]="usuario.password" 
-            placeholder="******" 
-            [required]="!esEdicion"> 
+            placeholder="******"> 
         </div>
 
         <div class="form-group">
           <label for="telefono">Teléfono de Contacto (Opcional)</label>
-          <!-- REMOVIDO EL 'required' PORQUE ES OPCIONAL -->
           <input type="text" id="telefono" name="telefono" [(ngModel)]="usuario.telefono" placeholder="6671234567">
         </div>
       </div>
@@ -64,29 +62,13 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label>Rol / Perfil Asignado <span style="color: #ef4444;">* (Selecciona exactamente 1)</span></label>
-        <div class="roles-box">
-          <!-- CAMBIADO A TYPE="RADIO" CON EL MISMO NAME PARA LOGRAR LA EXCLUSIVIDAD DE SELECCIÓN -->
-          <div *ngFor="let perf of perfilesDisponibles" class="role-item">
-            <input
-              type="radio"
-              name="perfil_unico"
-              [id]="perf.id"
-              [checked]="tienePerfil(perf.id!)"
-              (change)="onPerfilUnicoSelect(perf.id!)">
-            <label [for]="perf.id" class="checkbox-label">{{ perf.nombre_perfil }}</label>
-          </div>
-          <div *ngIf="perfilesDisponibles.length === 0" class="no-roles">
-            No hay perfiles registrados en BD. Créalos primero.
-          </div>
-        </div>
-      </div>
+      <!-- 🛡️ NOTA DE SEGURIDAD: Se omite la sección NoSQL de 'perfil_ids' radio buttons 
+           para evitar auto-escalación o des-escalación de privilegios -->
 
       <div class="form-actions">
-        <button type="button" routerLink="/usuarios" class="btn-cancel">Cancelar</button>
-        <button type="submit" [disabled]="!f.valid || !validarRoles() || cargando" class="btn-submit">
-          {{ cargando ? 'Guardando...' : (esEdicion ? 'Actualizar' : 'Registrar') }}
+        <button type="button" routerLink="/productos" class="btn-cancel">Cancelar</button>
+        <button type="submit" [disabled]="!f.valid || cargando" class="btn-submit">
+          {{ cargando ? 'Guardando...' : 'Actualizar Mis Datos' }}
         </button>
       </div>
 

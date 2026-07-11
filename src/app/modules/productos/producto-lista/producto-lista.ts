@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../core/services/product';
@@ -17,6 +17,9 @@ export class ProductoListaComponent implements OnInit {
   productos: Producto[] = [];
   cargando: boolean = true;
   usuarioLogueado: string | null = '';
+  
+  // ⚡ Control de estado para el dropdown del menú superior
+  mostrarMenu: boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -30,7 +33,40 @@ export class ProductoListaComponent implements OnInit {
     this.cargarProductos();
   }
 
-  // 🛡️ REESTRUCTURACIÓN DE CONTROL DE ACCESOS
+  // ⚡ Abre y cierra el menú desplegable
+  toggleMenu(event: Event): void {
+    event.stopPropagation();
+    this.mostrarMenu = !this.mostrarMenu;
+    this.cdr.markForCheck();
+  }
+
+  // ⚡ Redirige al formulario protegido pasando el ID activo de MongoDB
+  irAEditarPerfil(): void {
+    // 1. Obtenemos el valor crudo del almacenamiento
+    let usuarioId = localStorage.getItem('usuario_id');
+    
+    if (!usuarioId || usuarioId === 'null' || usuarioId === 'undefined') {
+      console.warn("⚠️ 'usuario_id' está corrupto o es null en el localStorage. Aplicando fallback de emergencia.");
+      usuarioId = 'mi-perfil'; 
+    }
+
+    console.log("🚀 ID definitivo enviado al Router:", usuarioId);
+    
+    this.mostrarMenu = false;
+    
+    this.router.navigate(['/mi-perfil/editar/', usuarioId]);
+    this.cdr.markForCheck();
+  }
+
+  // ⚡ Cierra el menú automáticamente si el usuario hace clic fuera de él
+  @HostListener('document:click')
+  clickAfuera(): void {
+    if (this.mostrarMenu) {
+      this.mostrarMenu = false;
+      this.cdr.markForCheck();
+    }
+  }
+
   tieneAcceso(seccion: string): boolean {
     const rawSecciones = localStorage.getItem('secciones_permitidas');
     if (!rawSecciones) return false;
@@ -39,7 +75,7 @@ export class ProductoListaComponent implements OnInit {
       const secciones = JSON.parse(rawSecciones);
       return Array.isArray(secciones) && secciones.includes(seccion);
     } catch (e) {
-      return false; // Evita que se rompa el renderizado ante strings corruptos
+      return false; 
     }
   }
 
@@ -53,7 +89,7 @@ export class ProductoListaComponent implements OnInit {
           this.productos = response.data;
         }
         this.cargando = false;
-        this.cdr.markForCheck(); // Obliga a OnPush a pintar los cambios asíncronos y el Sidebar
+        this.cdr.markForCheck();
       },
       error: () => {
         this.cargando = false;

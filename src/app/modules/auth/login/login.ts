@@ -38,27 +38,43 @@ export class LoginComponent {
         console.log("👉 RESPUESTA REAL DETECTADA:", response);
 
         if (response && response.success) {
-        const usuario = response.usuario;
-        const token = response.token;
+          const usuario = response.usuario;
+          const token = response.token;
 
-        if (token) {
-          localStorage.setItem('token', token);
-          localStorage.setItem('token_acceso', token);
-          localStorage.setItem('access_token', token);
-          localStorage.setItem('api_token', token);
+          if (token) {
+            localStorage.setItem('token', token);
+            localStorage.setItem('token_acceso', token);
+            localStorage.setItem('access_token', token);
+            localStorage.setItem('api_token', token);
+          }
+
+          if (usuario) {
+            localStorage.setItem('usuario_id', usuario.id || '');
+            localStorage.setItem('usuario_nickname', usuario.usuario || '');
+            localStorage.setItem('usuario_nombre_completo', usuario.nombre_completo || '');
+            localStorage.setItem('usuario_correo', usuario.correo_electronico || '');
+            localStorage.setItem('usuario_telefono', usuario.telefono || '');
+            localStorage.setItem('usuario_codigo', usuario.codigo_usuario || '');
+            localStorage.setItem('usuario_foto', usuario.foto_perfil || '');
+            if (usuario.perfil_ids) {
+              localStorage.setItem('usuario_perfiles', JSON.stringify(usuario.perfil_ids));
+            }
+          }
+
+          // Mapeo de accesos de secciones
+          const secciones = response.secciones_permitidas || [];
+
+          if (!secciones.includes('mi-perfil')) {
+            secciones.push('mi-perfil');
+          }
+          
+          localStorage.setItem('secciones_permitidas', JSON.stringify(secciones));
+          
+          // Redirección al panel principal una sola vez tras guardar todo
+          this.router.navigate(['/productos']);
+        } else {
+          this.errorMensaje = response.message || 'Credenciales incorrectas.';
         }
-
-        if (usuario?.usuario) {
-          localStorage.setItem('usuario_nickname', usuario.usuario);
-        }
-
-        // 🔑 MAPEO DIRECTO DE REGLAS DE ACCESO NO SQL
-        // Captura el arreglo limpio enviado por el controlador y lo inyecta al localStorage
-        const secciones = response.secciones_permitidas || [];
-        localStorage.setItem('secciones_permitidas', JSON.stringify(secciones));
-      }
-
-      this.router.navigate(['/productos']);
       },
       error: (err) => {
         this.cargando = false;

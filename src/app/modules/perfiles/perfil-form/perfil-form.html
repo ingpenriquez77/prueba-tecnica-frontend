@@ -8,7 +8,7 @@
     <form (ngSubmit)="guardar()" #f="ngForm">
 
       <div class="form-group">
-        <label for="codigo">Código del Perfil (Slug)</label>
+        <label for="codigo">Código del Perfil</label>
         <input
           type="text"
           id="codigo"
@@ -31,7 +31,7 @@
       </div>
 
       <div class="form-group">
-        <label>Secciones Permitidas</label>
+        <label>Secciones Permitidas <span style="color: #ef4444;">* (Selecciona al menos 1)</span></label>
         <div class="permissions-grid">
           <div *ngFor="let mod of modulosDisponibles" class="permission-item">
             <input
@@ -46,7 +46,7 @@
 
       <div class="form-actions">
         <button type="button" routerLink="/perfiles" class="btn-cancel">Cancelar</button>
-        <button type="submit" [disabled]="!f.valid || cargando" class="btn-submit">
+        <button type="submit" [disabled]="!f.valid || !validarSecciones() || cargando" class="btn-submit">
           {{ cargando ? 'Guardando...' : (esEdicion ? 'Actualizar Cambios' : 'Crear Perfil') }}
         </button>
       </div>

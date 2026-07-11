@@ -35,4 +35,14 @@ export class AuthService {
   recuperarPassword(correo: string): Observable<any> {
       return this.http.post<any>(`${this.baseUrl}/recuperar-password`, { correo_electronico: correo });
     }
+
+  obtenerPerfilActivo(): Observable<any> {
+  // Le pega al endpoint propio y separado de tu backend para el perfil
+  return this.http.get<any>(`${this.baseUrl}/perfil`); 
+    // Nota: Si tu ruta de Laravel es diferente (ej: /api/auth/me o /api/mi-perfil), cámbiala aquí.
+  }
+
+  actualizarPerfilActivo(id: string, data: FormData): Observable<any> {
+    return this.http.post(`${this.baseUrl}/usuarios/${id}`, data); 
+  }
 }

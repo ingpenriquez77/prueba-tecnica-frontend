@@ -72,6 +72,8 @@ export class UsuarioFormComponent implements OnInit {
           if (!this.usuario.perfil_ids) {
             this.usuario.perfil_ids = [];
           }
+          // En modo edición la contraseña se inicializa vacía para indicar que es opcional modificarla
+          this.usuario.password = '';
           this.cdr.markForCheck();
         }
       },
@@ -97,22 +99,36 @@ export class UsuarioFormComponent implements OnInit {
     }
   }
 
-  onPerfilSelect(perfilId: string, event: Event): void {
-    const checkbox = event.target as HTMLInputElement;
-    if (checkbox.checked) {
-      if (!this.usuario.perfil_ids.includes(perfilId)) {
-        this.usuario.perfil_ids.push(perfilId);
-      }
-    } else {
-      this.usuario.perfil_ids = this.usuario.perfil_ids.filter(id => id !== perfilId);
-    }
+  /**
+   * 🛠️ SELECCIÓN EXCLUSIVA DE PERFIL
+   * Limpia el arreglo previo de MongoDB y asigna únicamente el nuevo ID seleccionado
+   */
+  onPerfilUnicoSelect(perfilId: string): void {
+    this.usuario.perfil_ids = [perfilId];
+    
+    // 🚀 Notifica a OnPush del cambio del arreglo para validar el botón en tiempo real
+    this.cdr.markForCheck(); 
   }
 
   tienePerfil(perfilId: string): boolean {
     return this.usuario.perfil_ids ? this.usuario.perfil_ids.includes(perfilId) : false;
   }
 
+  /**
+   * 🛠️ VALIDACIÓN MAESTRA DE ROLES MÍNIMOS
+   * Evalúa que el arreglo cuente exactamente con la selección requerida
+   */
+  validarRoles(): boolean {
+    return this.usuario.perfil_ids && this.usuario.perfil_ids.length === 1;
+  }
+
   guardar(): void {
+    if (!this.validarRoles()) {
+      this.errorMensaje = 'Operación inválida. Debes seleccionar obligatoriamente un rol para el usuario.';
+      this.cdr.markForCheck();
+      return;
+    }
+
     this.cargando = true;
     this.errorMensaje = null;
     this.cdr.markForCheck();
@@ -123,21 +139,21 @@ export class UsuarioFormComponent implements OnInit {
     formData.append('usuario', this.usuario.usuario);
     formData.append('nombre_completo', this.usuario.nombre_completo);
     formData.append('correo_electronico', this.usuario.correo_electronico);
-    formData.append('telefono', this.usuario.telefono);
+    
+    // Solo añadimos el teléfono al FormData si el usuario escribió algo en él (ya que es opcional)
+    if (this.usuario.telefono) {
+      formData.append('telefono', this.usuario.telefono);
+    }
 
     // 🔑 CONTRASEÑA INTELIGENTE: Solo viaja si el usuario escribió algo (Nuevo u Opcional en Edición)
     if (this.usuario.password && this.usuario.password.trim() !== '') {
       formData.append('password', this.usuario.password);
     }
 
-    // 🚀 IDs de Perfiles emulando un array nativo
-    if (this.usuario.perfil_ids && this.usuario.perfil_ids.length > 0) {
-      this.usuario.perfil_ids.forEach(id => {
-        formData.append('perfil_ids[]', id);
-      });
-    } else {
-      formData.append('perfil_ids[]', '');
-    }
+    // 🚀 ID de Perfil único emulando un array nativo compatible con la API
+    this.usuario.perfil_ids.forEach(id => {
+      formData.append('perfil_ids[]', id);
+    });
 
     // 📸 Adjuntamos el archivo de la foto solo si el usuario seleccionó uno nuevo
     if (this.archivoImagen) {
