@@ -28,7 +28,7 @@ export class AuditoriaHistorialComponent implements OnInit {
     this.cargarHistorial();
   }
 
-  // 🎯 CORREGIDO: Renombrado exactamente a tieneAcceso para corregir el error del compilador
+  // CORREGIDO: Renombrado exactamente a tieneAcceso para corregir el error del compilador
   tieneAcceso(seccion: string): boolean {
     const rawSecciones = localStorage.getItem('secciones_permitidas');
     if (!rawSecciones) return false;
@@ -58,7 +58,7 @@ export class AuditoriaHistorialComponent implements OnInit {
           }
         });
 
-        // 🕒 Ordenamos cronológicamente: lo más reciente primero
+        // Ordenamos cronológicamente: lo más reciente primero
         this.historial = todosLosRegistros.sort((a, b) =>
           new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         );
@@ -74,14 +74,14 @@ export class AuditoriaHistorialComponent implements OnInit {
     });
   }
 
-  // ⚡ Abre y cierra el menú desplegable superior del Navbar
+  // Abre y cierra el menú desplegable superior del Navbar
   toggleMenu(event: Event): void {
     event.stopPropagation();
     this.mostrarMenu = !this.mostrarMenu;
     this.cdr.markForCheck();
   }
 
-  // ⚡ Cierra el menú automáticamente si el usuario hace clic fuera de él
+  // Cierra el menú automáticamente si el usuario hace clic fuera de él
   @HostListener('document:click')
   clickAfuera(): void {
     if (this.mostrarMenu) {
@@ -90,21 +90,20 @@ export class AuditoriaHistorialComponent implements OnInit {
     }
   }
 
-  // ⚡ Redirige al formulario protegido pasando el ID activo extraído del login
+  // Redirige al formulario protegido pasando el ID activo extraído del login
   irAEditarPerfil(): void {
     let usuarioId = localStorage.getItem('usuario_id');
     
-    // 🎯 LIMPIEZA TOTAL: Valida y limpia strings corruptas del almacenamiento local
+    // LIMPIEZA TOTAL: Valida y limpia strings corruptas del almacenamiento local
     if (!usuarioId || usuarioId === 'null' || usuarioId === 'undefined') {
-      console.warn("⚠️ 'usuario_id' está corrupto o es null en el localStorage. Aplicando fallback de emergencia.");
+      console.warn("'usuario_id' está corrupto o es null en el localStorage. Aplicando fallback de emergencia.");
       usuarioId = 'mi-perfil'; 
     }
 
-    console.log("🚀 ID definitivo enviado al Router desde Auditoría:", usuarioId);
+    console.log("ID definitivo enviado al Router desde Auditoría:", usuarioId);
     
     this.mostrarMenu = false;
     
-    // 🎯 RUTA SIN DIAGONAL FINAL
     this.router.navigate(['/mi-perfil/editar', usuarioId]);
     this.cdr.markForCheck();
   }

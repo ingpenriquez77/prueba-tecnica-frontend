@@ -10,7 +10,6 @@ import { ProductService } from '../../../core/services/product';
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './producto-form.html',
   styleUrls: ['./producto-form.css'],
-  // 🚀 OPTIMIZACIÓN 1: Evita que Angular gaste recursos re-renderizando el formulario en segundo plano
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductoFormComponent implements OnInit {
@@ -29,7 +28,7 @@ export class ProductoFormComponent implements OnInit {
     private productService: ProductService,
     private router: Router,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef // 🚀 Inyectado para forzar renderizados controlados
+    private cdr: ChangeDetectorRef // Inyectado para forzar renderizados controlados
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +44,7 @@ export class ProductoFormComponent implements OnInit {
       next: (response) => {
         if (response && response.data) {
           this.producto = response.data;
-          // 🚀 OPTIMIZACIÓN 2: Fuerza el pintado de datos de MongoDB en el formulario de inmediato
+          // Fuerza el pintado de datos de MongoDB en el formulario de inmediato
           this.cdr.markForCheck();
         }
       },
@@ -64,7 +63,7 @@ export class ProductoFormComponent implements OnInit {
     if (this.esEdicion) {
       this.productService.actualizar(this.productoId!, this.producto).subscribe({
         next: () => {
-          // 🚀 OPTIMIZACIÓN 3: Redirección inmediata y limpia sin congelar la pestaña
+          // Redirección inmediata y limpia sin congelar la pestaña
           this.router.navigate(['/productos']).then(() => {
             alert('Producto actualizado con éxito. Movimiento registrado en bitácora.');
           });
@@ -72,7 +71,7 @@ export class ProductoFormComponent implements OnInit {
         error: (err) => {
           this.cargando = false;
           this.errorMensaje = err.error?.message || 'Error al actualizar el producto.';
-          this.cdr.markForCheck(); // Notifica el error a la interfaz sin demoras
+          this.cdr.markForCheck(); 
         }
       });
     } else {

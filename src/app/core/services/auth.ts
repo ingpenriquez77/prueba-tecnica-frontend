@@ -21,10 +21,7 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
-  // 🚀 LA REVERSIÓN: Habilitamos Acceso Total Total
   tieneAcceso(modulo: string): boolean {
-    // Ya no revisamos localStorage ni MongoDB.
-    // Simplemente decimos "SÍ" a cualquier sección que se pregunte.
     return true;
   }
 
@@ -37,9 +34,7 @@ export class AuthService {
     }
 
   obtenerPerfilActivo(): Observable<any> {
-  // Le pega al endpoint propio y separado de tu backend para el perfil
-  return this.http.get<any>(`${this.baseUrl}/perfil`); 
-    // Nota: Si tu ruta de Laravel es diferente (ej: /api/auth/me o /api/mi-perfil), cámbiala aquí.
+    return this.http.get<any>(`${this.baseUrl}/perfil`); 
   }
 
   actualizarPerfilActivo(id: string, data: FormData): Observable<any> {

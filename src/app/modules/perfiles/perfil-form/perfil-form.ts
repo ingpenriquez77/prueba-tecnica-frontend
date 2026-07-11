@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ProfileService } from '../../../core/services/profile'; // Ajusta la ruta de tus servicios
+import { ProfileService } from '../../../core/services/profile';
 
 @Component({
   selector: 'app-perfil-form', 
@@ -77,12 +77,12 @@ export class PerfilFormComponent implements OnInit {
     } else {
       this.perfil.secciones_permitidas = this.perfil.secciones_permitidas.filter((id: string) => id !== moduloId);
     }
-    // 🚀 Informa a la estrategia OnPush para refrescar la validez del botón al instante
+    // Informa a la estrategia OnPush para refrescar la validez del botón al instante
     this.cdr.markForCheck(); 
   }
 
   /**
-   * 🛠️ VALIDACIÓN MÍNIMA DE SECCIONES
+   * VALIDACIÓN MÍNIMA DE SECCIONES
    * Retorna true únicamente si el arreglo NoSQL posee al menos una opción asignada
    */
   validarSecciones(): boolean {

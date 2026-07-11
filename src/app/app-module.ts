@@ -49,6 +49,6 @@ import { AuthInterceptor } from './core/interceptors/auth-interceptor';
       multi: true
     }
   ],
-  bootstrap: [AppComponent] // Mantener el arranque nativo de la SPA
+  bootstrap: [AppComponent] 
 })
 export class AppModule { }

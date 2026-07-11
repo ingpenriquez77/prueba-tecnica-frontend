@@ -9,7 +9,7 @@ import { AuthService } from '../../core/services/auth';
   selector: 'app-recuperar',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  // 🛡️ Si el archivo HTML está en la misma carpeta, lo dejamos relativo.
+  // Si el archivo HTML está en la misma carpeta, lo dejamos relativo.
   // Asegúrate de que el archivo se llame exactamente 'recuperar.html' (todo en minúsculas)
   templateUrl: './recuperar.html',
   styleUrls: ['./recuperar.css']

@@ -50,7 +50,7 @@ export class ProductoListaComponent implements OnInit {
       usuarioId = 'mi-perfil'; 
     }
 
-    console.log("🚀 ID definitivo enviado al Router:", usuarioId);
+    console.log(" ID definitivo enviado al Router:", usuarioId);
     
     this.mostrarMenu = false;
     
@@ -58,7 +58,7 @@ export class ProductoListaComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
-  // ⚡ Cierra el menú automáticamente si el usuario hace clic fuera de él
+  // Cierra el menú automáticamente si el usuario hace clic fuera de él
   @HostListener('document:click')
   clickAfuera(): void {
     if (this.mostrarMenu) {

@@ -35,7 +35,7 @@ export class LoginComponent {
       next: (response: any) => {
         this.cargando = false;
 
-        console.log("👉 RESPUESTA REAL DETECTADA:", response);
+        console.log("RESPUESTA REAL DETECTADA:", response);
 
         if (response && response.success) {
           const usuario = response.usuario;

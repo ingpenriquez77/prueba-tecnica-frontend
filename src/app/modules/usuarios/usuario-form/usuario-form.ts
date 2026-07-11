@@ -33,7 +33,7 @@ export class UsuarioFormComponent implements OnInit {
   cargando: boolean = false;
   errorMensaje: string | null = null;
 
-  // 📸 Variable temporal para almacenar el archivo binario real de la imagen
+  // Variable temporal para almacenar el archivo binario real de la imagen
   archivoImagen: File | null = null;
 
   constructor(
@@ -87,7 +87,7 @@ export class UsuarioFormComponent implements OnInit {
   onFotoChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      this.archivoImagen = input.files[0]; // 🚀 Guardamos el archivo binario real para Laravel
+      this.archivoImagen = input.files[0]; 
 
       // Renderizar miniatura local en el recuadro chico
       const reader = new FileReader();
@@ -100,13 +100,13 @@ export class UsuarioFormComponent implements OnInit {
   }
 
   /**
-   * 🛠️ SELECCIÓN EXCLUSIVA DE PERFIL
+   * SELECCIÓN EXCLUSIVA DE PERFIL
    * Limpia el arreglo previo de MongoDB y asigna únicamente el nuevo ID seleccionado
    */
   onPerfilUnicoSelect(perfilId: string): void {
     this.usuario.perfil_ids = [perfilId];
     
-    // 🚀 Notifica a OnPush del cambio del arreglo para validar el botón en tiempo real
+    // Notifica a OnPush del cambio del arreglo para validar el botón en tiempo real
     this.cdr.markForCheck(); 
   }
 
@@ -115,7 +115,7 @@ export class UsuarioFormComponent implements OnInit {
   }
 
   /**
-   * 🛠️ VALIDACIÓN MAESTRA DE ROLES MÍNIMOS
+   * VALIDACIÓN MAESTRA DE ROLES MÍNIMOS
    * Evalúa que el arreglo cuente exactamente con la selección requerida
    */
   validarRoles(): boolean {
@@ -133,7 +133,7 @@ export class UsuarioFormComponent implements OnInit {
     this.errorMensaje = null;
     this.cdr.markForCheck();
 
-    // 🚀 Construimos el payload como FormData dinámico
+    // Construimos el payload como FormData dinámico
     const formData = new FormData();
     formData.append('codigo_usuario', this.usuario.codigo_usuario);
     formData.append('usuario', this.usuario.usuario);
@@ -145,17 +145,17 @@ export class UsuarioFormComponent implements OnInit {
       formData.append('telefono', this.usuario.telefono);
     }
 
-    // 🔑 CONTRASEÑA INTELIGENTE: Solo viaja si el usuario escribió algo (Nuevo u Opcional en Edición)
+    // CONTRASEÑA INTELIGENTE: Solo viaja si el usuario escribió algo (Nuevo u Opcional en Edición)
     if (this.usuario.password && this.usuario.password.trim() !== '') {
       formData.append('password', this.usuario.password);
     }
 
-    // 🚀 ID de Perfil único emulando un array nativo compatible con la API
+    // ID de Perfil único emulando un array nativo compatible con la API
     this.usuario.perfil_ids.forEach(id => {
       formData.append('perfil_ids[]', id);
     });
 
-    // 📸 Adjuntamos el archivo de la foto solo si el usuario seleccionó uno nuevo
+    // Adjuntamos el archivo de la foto solo si el usuario seleccionó uno nuevo
     if (this.archivoImagen) {
       formData.append('foto_perfil', this.archivoImagen, this.archivoImagen.name);
     }

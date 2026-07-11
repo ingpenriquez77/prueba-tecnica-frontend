@@ -40,11 +40,7 @@ export class MiPerfilFormComponent implements OnInit {
   ngOnInit(): void {
     this.usuarioId = this.route.snapshot.paramMap.get('id') || localStorage.getItem('usuario_id');
     
-    console.log("🔍 [MiPerfil] ID detectado para actualizar:", this.usuarioId);
-
-    // 🎯 BYPASS MAESTRO: Para leer los datos de inicio, usamos el UserService.
-    // Si Laravel nos tira el error 403 de permisos ("Acceso denegado"),
-    // cargaremos de forma segura los fallbacks o permitiremos la edición directa.
+    console.log("[MiPerfil] ID detectado para actualizar:", this.usuarioId);
     this.cargarMisDatos(this.usuarioId!);
   }
 
@@ -65,9 +61,8 @@ export class MiPerfilFormComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.warn("⚠️ Laravel bloqueó el GET. Cargando datos reales desde caché local.");
+        console.warn(" Laravel bloqueó el GET. Cargando datos reales desde caché local.");
         console.log(this.usuario);
-        // RECUPERAMOS LOS VALORES REALES DE TU CUENTA
         this.usuario = {
           codigo_usuario: localStorage.getItem('usuario_codigo') || 'ADMIN-01',
           usuario: localStorage.getItem('usuario_nickname') || 'admin',
@@ -132,7 +127,6 @@ export class MiPerfilFormComponent implements OnInit {
       },
       error: (err) => {
         this.cargando = false;
-        // Si el guardado también es bloqueado por el Middleware de Laravel, mandamos alerta clara
         if (err.status === 403) {
           this.errorMensaje = "El servidor de Laravel bloqueó la actualización de este perfil por reglas del Middleware NoSQL.";
         } else if (err.error && err.error.errors) {

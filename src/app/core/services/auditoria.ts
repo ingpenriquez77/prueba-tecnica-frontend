@@ -10,7 +10,6 @@ export class AuditoriaService {
   private baseUrl = `${environment.apiUrl}/auditoria`;
   private http = inject(HttpClient);
 
-  // 🚀 Llama los 3 endpoints al mismo tiempo y junta los resultados
   obtenerHistorialCompleto(): Observable<any[]> {
     return forkJoin([
       this.http.get<any>(`${this.baseUrl}/productos`),

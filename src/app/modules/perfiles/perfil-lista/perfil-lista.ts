@@ -55,10 +55,6 @@ export class PerfilListaComponent implements OnInit {
     });
   }
 
-  /**
-   * OPTIMIZACIÓN MAESTRA: Rastrera cada fila por su ID único de MongoDB
-   * Evita lag visual al recargar el listado NoSQL
-   */
   trackByPerfilId(index: number, perfil: Perfil): string {
     return perfil.id || '';
   }
@@ -75,11 +71,11 @@ export class PerfilListaComponent implements OnInit {
     let usuarioId = localStorage.getItem('usuario_id');
     
     if (!usuarioId || usuarioId === 'null' || usuarioId === 'undefined') {
-      console.warn("⚠️ 'usuario_id' está corrupto o es null en el localStorage. Aplicando fallback de emergencia.");
+      console.warn("'usuario_id' está corrupto o es null en el localStorage. Aplicando fallback de emergencia.");
       usuarioId = 'mi-perfil'; 
     }
 
-    console.log("🚀 ID definitivo enviado al Router:", usuarioId);
+    console.log("ID definitivo enviado al Router:", usuarioId);
     
     this.mostrarMenu = false;
     
@@ -101,7 +97,7 @@ export class PerfilListaComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  // 📊 EXPORTAR PERFILES A EXCEL (CSV)
+  // EXPORTAR PERFILES A EXCEL (CSV)
     exportarExcel(): void {
       if (this.perfiles.length === 0) {
         alert('No hay datos para exportar.');
@@ -130,7 +126,7 @@ export class PerfilListaComponent implements OnInit {
       document.body.removeChild(link);
     }
 
-    // 📕 EXPORTAR PERFILES A PDF LIMPITO
+    // EXPORTAR PERFILES A PDF LIMPITO
     exportarPDF(): void {
       if (this.perfiles.length === 0) {
         alert('No hay datos para exportar.');
