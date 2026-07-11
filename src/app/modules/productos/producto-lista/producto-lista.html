@@ -10,10 +10,17 @@
   <div class="main-content">
     <aside class="sidebar">
       <nav>
-        <a routerLink="/productos" class="active">📦 Productos</a>
-        <a routerLink="/perfiles">🔑 Perfiles / Roles</a>
-        <a routerLink="/usuarios">👥 Usuarios</a>
-        <a routerLink="/auditoria">🛡️ Bitácora Auditoría</a>
+        <!-- Muestra el botón de Productos solo si está permitido en el arreglo NoSQL -->
+        <a *ngIf="tieneAcceso('productos')" routerLink="/productos" routerLinkActive="active">📦 Productos</a>
+        
+        <!-- Muestra el botón de Perfiles solo si está permitido -->
+        <a *ngIf="tieneAcceso('perfiles')" routerLink="/perfiles" routerLinkActive="active">🔑 Perfiles / Roles</a>
+        
+        <!-- Muestra el botón de Usuarios solo si está permitido -->
+        <a *ngIf="tieneAcceso('usuarios')" routerLink="/usuarios" routerLinkActive="active">👥 Usuarios</a>
+        
+        <!-- Muestra el botón de Auditoría solo si está permitido -->
+        <a *ngIf="tieneAcceso('auditoria')" routerLink="/auditoria" routerLinkActive="active">🛡️ Bitácora Auditoría</a>
       </nav>
     </aside>
 

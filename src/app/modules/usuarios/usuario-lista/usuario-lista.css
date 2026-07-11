@@ -3,10 +3,9 @@
   flex-direction: column;
   min-height: 100vh;
   font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: #f8fafc;
+  background-color: #f9fafb;
 }
 
-/* 🔝 Barra de navegación superior */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -16,32 +15,17 @@
   padding: 1rem 2rem;
 }
 
-.logo {
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.user-menu {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
 .btn-logout {
   background-color: #ef4444;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
+  margin-left: 1rem;
   font-weight: 500;
-  transition: background-color 0.2s;
 }
-
-.btn-logout:hover {
-  background-color: #dc2626;
-}
+.btn-logout:hover { background-color: #dc2626; }
 
 /* 📂 Distribución de contenido principal */
 .main-content {
@@ -51,31 +35,25 @@
 
 /* 🧭 Menú Lateral (Sidebar) */
 .sidebar {
-  width: 250px;
+  width: 240px;
   background-color: #ffffff;
-  border-right: 1px solid #e2e8f0;
+  border-right: 1px solid #e5e7eb;
   padding: 2rem 1rem;
 }
 
 .sidebar nav a {
   display: block;
   padding: 0.75rem 1rem;
-  color: #475569;
+  color: #4b5563;
   text-decoration: none;
   border-radius: 6px;
   margin-bottom: 0.5rem;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.2s;
+  font-weight: 500;
 }
 
-.sidebar nav a:hover {
-  background-color: #f1f5f9;
-  color: #1e293b;
-}
-
+.sidebar nav a:hover,
 .sidebar nav a.active {
-  background-color: #eff6ff;
+  background-color: #f3f4f6;
   color: #2563eb;
 }
 

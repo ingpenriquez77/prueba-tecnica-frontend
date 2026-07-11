@@ -20,7 +20,7 @@ export class ProductoListaComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    public authService: AuthService, // 🚀 CAMBIADO A PUBLIC para usarlo en el HTML
+    public authService: AuthService, 
     private router: Router,
     private cdr: ChangeDetectorRef
   ) { }
@@ -28,6 +28,19 @@ export class ProductoListaComponent implements OnInit {
   ngOnInit(): void {
     this.usuarioLogueado = localStorage.getItem('usuario_nickname');
     this.cargarProductos();
+  }
+
+  // 🛡️ REESTRUCTURACIÓN DE CONTROL DE ACCESOS
+  tieneAcceso(seccion: string): boolean {
+    const rawSecciones = localStorage.getItem('secciones_permitidas');
+    if (!rawSecciones) return false;
+
+    try {
+      const secciones = JSON.parse(rawSecciones);
+      return Array.isArray(secciones) && secciones.includes(seccion);
+    } catch (e) {
+      return false; // Evita que se rompa el renderizado ante strings corruptos
+    }
   }
 
   cargarProductos(): void {
@@ -40,7 +53,7 @@ export class ProductoListaComponent implements OnInit {
           this.productos = response.data;
         }
         this.cargando = false;
-        this.cdr.markForCheck();
+        this.cdr.markForCheck(); // Obliga a OnPush a pintar los cambios asíncronos y el Sidebar
       },
       error: () => {
         this.cargando = false;

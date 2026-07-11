@@ -24,6 +24,11 @@ export class AuditoriaHistorialComponent implements OnInit {
     this.cargarHistorial();
   }
 
+  tieneAcceso(seccion: string): boolean {
+    const secciones = JSON.parse(localStorage.getItem('secciones_permitidas') || '[]');
+    return secciones.includes(seccion);
+  }
+
   cargarHistorial(): void {
     this.cargando = true;
     this.cdr.markForCheck();

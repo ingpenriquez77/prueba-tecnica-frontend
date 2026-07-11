@@ -38,22 +38,27 @@ export class LoginComponent {
         console.log("👉 RESPUESTA REAL DETECTADA:", response);
 
         if (response && response.success) {
-          const usuario = response.usuario;
-          const token = response.token;
+        const usuario = response.usuario;
+        const token = response.token;
 
-          if (token) {
-            localStorage.setItem('token', token);
-            localStorage.setItem('token_acceso', token);
-            localStorage.setItem('access_token', token);
-            localStorage.setItem('api_token', token);
-          }
-
-          if (usuario?.usuario) {
-            localStorage.setItem('usuario_nickname', usuario.usuario);
-          }
+        if (token) {
+          localStorage.setItem('token', token);
+          localStorage.setItem('token_acceso', token);
+          localStorage.setItem('access_token', token);
+          localStorage.setItem('api_token', token);
         }
 
-        this.router.navigate(['/productos']);
+        if (usuario?.usuario) {
+          localStorage.setItem('usuario_nickname', usuario.usuario);
+        }
+
+        // 🔑 MAPEO DIRECTO DE REGLAS DE ACCESO NO SQL
+        // Captura el arreglo limpio enviado por el controlador y lo inyecta al localStorage
+        const secciones = response.secciones_permitidas || [];
+        localStorage.setItem('secciones_permitidas', JSON.stringify(secciones));
+      }
+
+      this.router.navigate(['/productos']);
       },
       error: (err) => {
         this.cargando = false;

@@ -1,26 +1,18 @@
-/* 🎛️ Estructura General del Contenedor (Dashboard) */
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background-color: #f8fafc;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #f9fafb;
 }
 
-/* 🏢 Barra de Navegación Superior (Navbar) */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #1e293b;
-  color: #ffffff;
-  padding: 15px 30px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.logo {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  color: white;
+  padding: 1rem 2rem;
 }
 
 .user-menu {
@@ -52,37 +44,26 @@
 }
 
 .sidebar {
-  width: 260px;
+  width: 240px;
   background-color: #ffffff;
-  border-right: 1px solid #e2e8f0;
-  padding: 20px 10px;
-}
-
-.sidebar nav {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  border-right: 1px solid #e5e7eb;
+  padding: 2rem 1rem;
 }
 
 .sidebar nav a {
   display: block;
-  padding: 12px 15px;
-  color: #475569;
+  padding: 0.75rem 1rem;
+  color: #4b5563;
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
   font-weight: 500;
-  transition: all 0.2s;
 }
 
-.sidebar nav a:hover {
-  background-color: #f1f5f9;
-  color: #1e293b;
-}
-
+.sidebar nav a:hover,
 .sidebar nav a.active {
-  background-color: #e2e8f0;
-  color: #0f172a;
-  font-weight: 600;
+  background-color: #f3f4f6;
+  color: #2563eb;
 }
 
 /* 📊 Espacio de Trabajo (Content Body) */

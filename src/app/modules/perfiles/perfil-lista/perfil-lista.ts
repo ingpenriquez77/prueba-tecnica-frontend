@@ -30,6 +30,11 @@ export class PerfilListaComponent implements OnInit {
     this.cargarPerfiles();
   }
 
+  tieneAcceso(seccion: string): boolean {
+    const secciones = JSON.parse(localStorage.getItem('secciones_permitidas') || '[]');
+    return secciones.includes(seccion);
+  }
+  
   cargarPerfiles(): void {
     this.cargando = true;
     this.cdr.markForCheck();

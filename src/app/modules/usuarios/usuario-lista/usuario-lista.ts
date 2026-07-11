@@ -30,6 +30,11 @@ export class UsuarioListaComponent implements OnInit {
     this.cargarUsuarios();
   }
 
+  tieneAcceso(seccion: string): boolean {
+    const secciones = JSON.parse(localStorage.getItem('secciones_permitidas') || '[]');
+    return secciones.includes(seccion);
+  }
+
   cargarUsuarios(): void {
     this.cargando = true;
     this.cdr.markForCheck();
