@@ -61,13 +61,12 @@
         <tr *ngFor="let u of usuarios; trackBy: trackByUsuarioId">
           <td>
             <div class="table-avatar-container">
-              <!-- Renderiza la imagen REAL solo si la variable existe, no está vacía y no contiene la palabra "null" -->
-              <img *ngIf="u.foto_perfil && u.foto_perfil !== '' && u.foto_perfil !== 'null'"
+              <img *ngIf="u.foto_perfil && u.foto_perfil !== '' && u.foto_perfil !== 'null' && !u.foto_perfil.includes('storage/http')"
                    [src]="u.foto_perfil"
                    alt="Avatar"
                    class="table-avatar">
 
-              <div *ngIf="!u.foto_perfil || u.foto_perfil === '' || u.foto_perfil === 'null'"
+              <div *ngIf="!u.foto_perfil || u.foto_perfil === '' || u.foto_perfil === 'null' || u.foto_perfil.includes('storage/http')"
                    class="table-avatar-placeholder">
                 {{ u.nombre_completo ? u.nombre_completo.charAt(0).toUpperCase() : 'A' }}
               </div>
