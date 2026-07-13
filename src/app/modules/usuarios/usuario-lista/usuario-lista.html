@@ -5,7 +5,7 @@
       <div class="user-menu-trigger" (click)="toggleMenu($event)">
         <span>Bienvenido, <strong class="admin-click">{{ usuarioLogueado }}</strong> ▾</span>
       </div>
-      
+
       <!-- Menú desplegable dinámico -->
       <div class="dropdown-menu" *ngIf="mostrarMenu">
         <!-- Redirecciona dinámicamente usando el ID del usuario activo -->
@@ -21,13 +21,13 @@
       <nav>
         <!-- Muestra el botón de Productos solo si está permitido en el arreglo NoSQL -->
         <a *ngIf="tieneAcceso('productos')" routerLink="/productos" routerLinkActive="active">📦 Productos</a>
-        
+
         <!-- Muestra el botón de Perfiles solo si está permitido -->
         <a *ngIf="tieneAcceso('perfiles')" routerLink="/perfiles" routerLinkActive="active">🔑 Perfiles / Roles</a>
-        
+
         <!-- Muestra el botón de Usuarios solo si está permitido -->
         <a *ngIf="tieneAcceso('usuarios')" routerLink="/usuarios" routerLinkActive="active">👥 Usuarios</a>
-        
+
         <!-- Muestra el botón de Auditoría solo si está permitido -->
         <a *ngIf="tieneAcceso('auditoria')" routerLink="/auditoria" routerLinkActive="active">🛡️ Bitácora Auditoría</a>
       </nav>
@@ -61,9 +61,15 @@
         <tr *ngFor="let u of usuarios; trackBy: trackByUsuarioId">
           <td>
             <div class="table-avatar-container">
-              <img *ngIf="u.foto_perfil" [src]="u.foto_perfil" alt="Avatar" class="table-avatar">
-              <div *ngIf="!u.foto_perfil" class="table-avatar-placeholder">
-                {{ u.nombre_completo.charAt(0).toUpperCase() }}
+              <!-- Renderiza la imagen REAL solo si la variable existe, no está vacía y no contiene la palabra "null" -->
+              <img *ngIf="u.foto_perfil && u.foto_perfil !== '' && u.foto_perfil !== 'null'"
+                   [src]="u.foto_perfil"
+                   alt="Avatar"
+                   class="table-avatar">
+
+              <div *ngIf="!u.foto_perfil || u.foto_perfil === '' || u.foto_perfil === 'null'"
+                   class="table-avatar-placeholder">
+                {{ u.nombre_completo ? u.nombre_completo.charAt(0).toUpperCase() : 'A' }}
               </div>
             </div>
           </td>
