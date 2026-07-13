@@ -5,7 +5,7 @@
       <div class="user-menu-trigger" (click)="toggleMenu($event)">
         <span>Bienvenido, <strong class="admin-click">{{ usuarioLogueado }}</strong> ▾</span>
       </div>
-      
+
       <!-- Menú desplegable dinámico -->
       <div class="dropdown-menu" *ngIf="mostrarMenu">
         <!-- Redirecciona dinámicamente usando el ID del usuario activo -->
@@ -21,13 +21,13 @@
       <nav>
         <!-- Muestra el botón de Productos solo si está permitido en el arreglo NoSQL -->
         <a *ngIf="tieneAcceso('productos')" routerLink="/productos" routerLinkActive="active">📦 Productos</a>
-        
+
         <!-- Muestra el botón de Perfiles solo si está permitido -->
         <a *ngIf="tieneAcceso('perfiles')" routerLink="/perfiles" routerLinkActive="active">🔑 Perfiles / Roles</a>
-        
+
         <!-- Muestra el botón de Usuarios solo si está permitido -->
         <a *ngIf="tieneAcceso('usuarios')" routerLink="/usuarios" routerLinkActive="active">👥 Usuarios</a>
-        
+
         <!-- Muestra el botón de Auditoría solo si está permitido -->
         <a *ngIf="tieneAcceso('auditoria')" routerLink="/auditoria" routerLinkActive="active">🛡️ Bitácora Auditoría</a>
       </nav>
@@ -55,7 +55,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let audit of historial; trackBy: trackByAuditoriaId">
-          <td class="text-muted">{{ audit.fecha_movimiento | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+          <td class="text-muted">{{ audit.updated_at | date:'dd/MM/yyyy HH:mm:ss' }}</td>
 
           <td><strong>{{ audit['usuario'] || 'sistema' }}</strong></td>
 
